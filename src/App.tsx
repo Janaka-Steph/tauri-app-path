@@ -8,10 +8,12 @@ function App() {
   const [appDir, setAppDir] = useState<string | null>(null);
 
   useEffect(() => {
-    path.appDir().then(dir => {
-      console.log('dir', dir);
-      setAppDir(dir)
-    });
+    if ('__TAURI__' in window) {
+      path.appDir().then(dir => {
+        console.log('dir', dir);
+        setAppDir(dir)
+      });
+    }
   }, [])
 
   return (
@@ -22,7 +24,7 @@ function App() {
           <img src={tauriWord} className="App-logo smaller" alt="logo" />
         </div>
         <h1>App Directory</h1>
-        <p>{appDir}</p>
+        <p>{appDir !== null ? appDir : 'loading...'}</p>
       </header>
     </div>
   )
