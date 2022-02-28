@@ -1,14 +1,19 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { path } from '@tauri-apps/api';
 import tauriCircles from './tauri.svg'
 import tauriWord from './wordmark.svg'
 import './App.css'
 
-async function getAppDirPath(): Promise<string> {
-  return path.appDir();
-}
-
 function App() {
+  const [appDir, setAppDir] = useState<string | null>(null);
+
+  useEffect(() => {
+    path.appDir().then(dir => {
+      console.log('dir', dir);
+      setAppDir(dir)
+    });
+  }, [])
+
   return (
     <div className="App">
       <header className="App-header">
@@ -17,7 +22,7 @@ function App() {
           <img src={tauriWord} className="App-logo smaller" alt="logo" />
         </div>
         <h1>App Directory</h1>
-        <p>{getAppDirPath()}</p>
+        <p>{appDir}</p>
       </header>
     </div>
   )
